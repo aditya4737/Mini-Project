@@ -11,6 +11,7 @@ import About from './pages/About'
 import Chat from './pages/Chat';
 import Home from './pages/Home';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -28,6 +29,7 @@ function App() {
         <Route path="/Lawyers" element={<Lawyers/>}/>
         <Route path="/Chat" element={<Chat/>}/>
       </Routes>
+    <Footer/>
     </BrowserRouter>
   )
 }
