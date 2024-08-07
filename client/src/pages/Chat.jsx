@@ -9,7 +9,7 @@ const Chat = () => {
         </div>
         <div class="relative">
           <input type="text"
-            class="input w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 outline-none text-xl"
+            class="input w-full p-3 border-2 border-gray-300 rounded-lg outline-none text-xl"
             id="input" placeholder="Type your message here...." />
           <button
         type="button"
