@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CaseForm = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +11,7 @@ const CaseForm = () => {
     caseType: '',
   });
 
-  const history = useHistory(); // useHistory hook to handle redirection
+  const navigate = useNavigate(); // useNavigate hook to handle redirection
 
   const caseTypes = [
     { label: 'Civil', value: 'civil' },
@@ -59,10 +59,7 @@ const CaseForm = () => {
     e.preventDefault();
     // Process form data here
     console.log(formData);
-    history.push({
-      pathname: '/CaseEinvoice',
-      state: { formData }
-    });
+    navigate('/CaseEinvoice', { state: { formData } });
   };
 
   return (
