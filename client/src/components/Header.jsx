@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
+  // State to manage the sidebar's visibility
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <header className="bg-white">
-      <div className="w-full flex h-16  items-center gap-8 px-4 sm:px-6 lg:px-8">
+      <div className="w-full flex h-16 items-center gap-8 px-4 sm:px-6 lg:px-8">
         <a className="block text-teal-600" href="#">
           <span className="sr-only">Home</span>
           <svg className="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,8 +52,10 @@ const Header = () => {
               </Link>
             </div>
 
+            {/* Button to toggle sidebar */}
             <button
               className="block rounded bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden"
+              onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Toggle menu</span>
               <svg
@@ -67,8 +72,51 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </header>
-  )
-}
 
-export default Header
+      {/* Sidebar */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-50 bg-gray-900 bg-opacity-75 md:hidden" onClick={() => setSidebarOpen(false)}>
+          <div className="fixed top-0 right-0 h-full w-64 bg-white p-4">
+            <button
+              className="mb-4 text-gray-600 hover:text-gray-900"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="sr-only">Close menu</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <nav aria-label="Mobile" className="mt-6">
+              <ul className="space-y-4">
+                <li>
+                  <Link to={"/"} className="text-gray-800 hover:text-teal-600"> Home </Link>
+                </li>
+                <li>
+                  <Link to={"/About"} className="text-gray-800 hover:text-teal-600"> About </Link>
+                </li>
+                <li>
+                  <Link className="text-gray-800 hover:text-teal-600"> Services </Link>
+                </li>
+                <li>
+                  <Link to={"/Signin"} className="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700"> Login </Link>
+                </li>
+                <li>
+                  <Link to={"/Signup"} className="block rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75"> Register </Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Header;

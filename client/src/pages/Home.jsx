@@ -49,7 +49,7 @@ const Home = () => {
                   </div>
                   <div>
                     <h3 className="mt-4 text-lg font-medium sm:text-xl">
-                      <a href="#" className="hover:underline">Find a Lawyer</a>
+                      <Link to={"/lawyers"} className="hover:underline">Find a Lawyer</Link>
                     </h3>
                     <p className="mt-1 text-sm text-gray-700">
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.

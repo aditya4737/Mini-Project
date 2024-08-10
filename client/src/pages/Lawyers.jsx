@@ -7,6 +7,7 @@ const Lawyers = () => {
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [ratingRange, setRatingRange] = useState({ from: 1, to: 5 });
   const [isPanelOpen, setIsPanelOpen] = useState(false); // State to manage mobile panel visibility
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
@@ -39,7 +40,6 @@ const Lawyers = () => {
   };
 
   const lawyersData = [
-    // Your sample lawyer data here
     {
       id: 1,
       name: "John Doe",
@@ -85,6 +85,7 @@ const Lawyers = () => {
       rating: 4.4,
       imageUrl: "https://images.unsplash.com/photo-1603415526960-304fcbf650b4",
     },
+    // Add more lawyer objects as needed
   ];
 
   // Filter and sort lawyers data
@@ -156,42 +157,20 @@ const Lawyers = () => {
                           </header>
 
                           <ul className="space-y-1 border-t border-gray-200 p-4">
-                            <li>
-                              <label className="inline-flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  value="Criminal Law"
-                                  className="size-5 rounded border-gray-300"
-                                  checked={selectedSpecializations.includes('Criminal Law')}
-                                  onChange={handleSpecializationChange}
-                                />
-                                <span className="text-sm font-medium text-gray-700">Criminal Law</span>
-                              </label>
-                            </li>
-                            <li>
-                              <label className="inline-flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  value="Corporate Law"
-                                  className="size-5 rounded border-gray-300"
-                                  checked={selectedSpecializations.includes('Corporate Law')}
-                                  onChange={handleSpecializationChange}
-                                />
-                                <span className="text-sm font-medium text-gray-700">Corporate Law</span>
-                              </label>
-                            </li>
-                            <li>
-                              <label className="inline-flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  value="Family Law"
-                                  className="size-5 rounded border-gray-300"
-                                  checked={selectedSpecializations.includes('Family Law')}
-                                  onChange={handleSpecializationChange}
-                                />
-                                <span className="text-sm font-medium text-gray-700">Family Law</span>
-                              </label>
-                            </li>
+                            {["Criminal Law", "Corporate Law", "Family Law"].map((specialization) => (
+                              <li key={specialization}>
+                                <label className="inline-flex items-center gap-2">
+                                  <input
+                                    type="checkbox"
+                                    value={specialization}
+                                    className="size-5 rounded border-gray-300"
+                                    checked={selectedSpecializations.includes(specialization)}
+                                    onChange={handleSpecializationChange}
+                                  />
+                                  <span className="text-sm font-medium text-gray-700">{specialization}</span>
+                                </label>
+                              </li>
+                            ))}
                           </ul>
                         </div>
                       </details>
@@ -219,42 +198,20 @@ const Lawyers = () => {
                           </header>
 
                           <ul className="space-y-1 border-t border-gray-200 p-4">
-                            <li>
-                              <label className="inline-flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  value="New York"
-                                  className="size-5 rounded border-gray-300"
-                                  checked={selectedLocations.includes('New York')}
-                                  onChange={handleLocationChange}
-                                />
-                                <span className="text-sm font-medium text-gray-700">New York</span>
-                              </label>
-                            </li>
-                            <li>
-                              <label className="inline-flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  value="Los Angeles"
-                                  className="size-5 rounded border-gray-300"
-                                  checked={selectedLocations.includes('Los Angeles')}
-                                  onChange={handleLocationChange}
-                                />
-                                <span className="text-sm font-medium text-gray-700">Los Angeles</span>
-                              </label>
-                            </li>
-                            <li>
-                              <label className="inline-flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  value="Chicago"
-                                  className="size-5 rounded border-gray-300"
-                                  checked={selectedLocations.includes('Chicago')}
-                                  onChange={handleLocationChange}
-                                />
-                                <span className="text-sm font-medium text-gray-700">Chicago</span>
-                              </label>
-                            </li>
+                            {["New York", "Los Angeles", "Chicago", "San Francisco", "Houston"].map((location) => (
+                              <li key={location}>
+                                <label className="inline-flex items-center gap-2">
+                                  <input
+                                    type="checkbox"
+                                    value={location}
+                                    className="size-5 rounded border-gray-300"
+                                    checked={selectedLocations.includes(location)}
+                                    onChange={handleLocationChange}
+                                  />
+                                  <span className="text-sm font-medium text-gray-700">{location}</span>
+                                </label>
+                              </li>
+                            ))}
                           </ul>
                         </div>
                       </details>
@@ -271,7 +228,7 @@ const Lawyers = () => {
 
                         <div className="border-t border-gray-200 bg-white">
                           <header className="flex items-center justify-between p-4">
-                            <span className="text-sm text-gray-700">Rating Range: {ratingRange.from} - {ratingRange.to}</span>
+                            <span className="text-sm text-gray-700">Rating Range</span>
                             <button
                               type="button"
                               className="text-sm text-gray-900 underline underline-offset-4"
@@ -281,33 +238,28 @@ const Lawyers = () => {
                             </button>
                           </header>
 
-                          <div className="border-t border-gray-200 p-4">
-                            <div className="space-y-2">
-                              <div className="flex justify-between items-center">
-                                <label htmlFor="from" className="text-sm font-medium text-gray-700">From</label>
-                                <input
-                                  type="number"
-                                  id="from"
-                                  min="1"
-                                  max="5"
-                                  value={ratingRange.from}
-                                  onChange={handleRatingChange}
-                                  className="size-5 rounded border-gray-300"
-                                />
-                              </div>
-                              <div className="flex justify-between items-center">
-                                <label htmlFor="to" className="text-sm font-medium text-gray-700">To</label>
-                                <input
-                                  type="number"
-                                  id="to"
-                                  min="1"
-                                  max="5"
-                                  value={ratingRange.to}
-                                  onChange={handleRatingChange}
-                                  className="size-5 rounded border-gray-300"
-                                />
-                              </div>
-                            </div>
+                          <div className="space-y-4 p-4">
+                            <label htmlFor="from" className="text-sm font-medium text-gray-700">From</label>
+                            <input
+                              id="from"
+                              type="number"
+                              min="1"
+                              max="5"
+                              value={ratingRange.from}
+                              onChange={handleRatingChange}
+                              className="w-full rounded border-gray-300 text-sm"
+                            />
+
+                            <label htmlFor="to" className="text-sm font-medium text-gray-700">To</label>
+                            <input
+                              id="to"
+                              type="number"
+                              min="1"
+                              max="5"
+                              value={ratingRange.to}
+                              onChange={handleRatingChange}
+                              className="w-full rounded border-gray-300 text-sm"
+                            />
                           </div>
                         </div>
                       </details>
@@ -315,232 +267,190 @@ const Lawyers = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Mobile View Filters and Sorting */}
-              <div className="lg:hidden">
-                <button
-                  className="w-full px-4 py-2 text-white bg-blue-600 rounded-md"
-                  onClick={togglePanel}
-                >
-                  Filters & Sorting
-                </button>
-
-                {isPanelOpen && (
-                  <div className="mt-4 space-y-4">
-                    <div>
-                      <label htmlFor="SortBy" className="block text-xs font-medium text-gray-700"> Sort By </label>
-                      <select id="SortBy" className="mt-1 rounded border-gray-300 text-sm" onChange={handleSortChange} value={sortBy}>
-                        <option value="">Sort By</option>
-                        <option value="Experience, DESC">Experience, DESC</option>
-                        <option value="Experience, ASC">Experience, ASC</option>
-                        <option value="Rating, DESC">Rating, DESC</option>
-                        <option value="Rating, ASC">Rating, ASC</option>
-                      </select>
-                    </div>
-
-                    <details className="overflow-hidden rounded border border-gray-300">
-                      <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
-                        <span className="text-sm font-medium">Specialization</span>
-                        <span className="transition group-open:-rotate-180">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                          </svg>
-                        </span>
-                      </summary>
-
-                      <div className="border-t border-gray-200 bg-white">
-                        <header className="flex items-center justify-between p-4">
-                          <span className="text-sm text-gray-700">{selectedSpecializations.length} Selected</span>
-                          <button
-                            type="button"
-                            className="text-sm text-gray-900 underline underline-offset-4"
-                            onClick={() => setSelectedSpecializations([])}
-                          >
-                            Reset
-                          </button>
-                        </header>
-
-                        <ul className="space-y-1 border-t border-gray-200 p-4">
-                          <li>
-                            <label className="inline-flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                value="Criminal Law"
-                                className="size-5 rounded border-gray-300"
-                                checked={selectedSpecializations.includes('Criminal Law')}
-                                onChange={handleSpecializationChange}
-                              />
-                              <span className="text-sm font-medium text-gray-700">Criminal Law</span>
-                            </label>
-                          </li>
-                          <li>
-                            <label className="inline-flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                value="Corporate Law"
-                                className="size-5 rounded border-gray-300"
-                                checked={selectedSpecializations.includes('Corporate Law')}
-                                onChange={handleSpecializationChange}
-                              />
-                              <span className="text-sm font-medium text-gray-700">Corporate Law</span>
-                            </label>
-                          </li>
-                          <li>
-                            <label className="inline-flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                value="Family Law"
-                                className="size-5 rounded border-gray-300"
-                                checked={selectedSpecializations.includes('Family Law')}
-                                onChange={handleSpecializationChange}
-                              />
-                              <span className="text-sm font-medium text-gray-700">Family Law</span>
-                            </label>
-                          </li>
-                        </ul>
-                      </div>
-                    </details>
-
-                    <details className="overflow-hidden rounded border border-gray-300">
-                      <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
-                        <span className="text-sm font-medium">Location</span>
-                        <span className="transition group-open:-rotate-180">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                          </svg>
-                        </span>
-                      </summary>
-
-                      <div className="border-t border-gray-200 bg-white">
-                        <header className="flex items-center justify-between p-4">
-                          <span className="text-sm text-gray-700">{selectedLocations.length} Selected</span>
-                          <button
-                            type="button"
-                            className="text-sm text-gray-900 underline underline-offset-4"
-                            onClick={() => setSelectedLocations([])}
-                          >
-                            Reset
-                          </button>
-                        </header>
-
-                        <ul className="space-y-1 border-t border-gray-200 p-4">
-                          <li>
-                            <label className="inline-flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                value="New York"
-                                className="size-5 rounded border-gray-300"
-                                checked={selectedLocations.includes('New York')}
-                                onChange={handleLocationChange}
-                              />
-                              <span className="text-sm font-medium text-gray-700">New York</span>
-                            </label>
-                          </li>
-                          <li>
-                            <label className="inline-flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                value="Los Angeles"
-                                className="size-5 rounded border-gray-300"
-                                checked={selectedLocations.includes('Los Angeles')}
-                                onChange={handleLocationChange}
-                              />
-                              <span className="text-sm font-medium text-gray-700">Los Angeles</span>
-                            </label>
-                          </li>
-                          <li>
-                            <label className="inline-flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                value="Chicago"
-                                className="size-5 rounded border-gray-300"
-                                checked={selectedLocations.includes('Chicago')}
-                                onChange={handleLocationChange}
-                              />
-                              <span className="text-sm font-medium text-gray-700">Chicago</span>
-                            </label>
-                          </li>
-                        </ul>
-                      </div>
-                    </details>
-
-                    <details className="overflow-hidden rounded border border-gray-300">
-                      <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
-                        <span className="text-sm font-medium">Rating</span>
-                        <span className="transition group-open:-rotate-180">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                          </svg>
-                        </span>
-                      </summary>
-
-                      <div className="border-t border-gray-200 bg-white">
-                        <header className="flex items-center justify-between p-4">
-                          <span className="text-sm text-gray-700">Rating Range: {ratingRange.from} - {ratingRange.to}</span>
-                          <button
-                            type="button"
-                            className="text-sm text-gray-900 underline underline-offset-4"
-                            onClick={() => setRatingRange({ from: 1, to: 5 })}
-                          >
-                            Reset
-                          </button>
-                        </header>
-
-                        <div className="border-t border-gray-200 p-4">
-                          <div className="space-y-2">
-                            <div className="flex justify-between items-center">
-                              <label htmlFor="from" className="text-sm font-medium text-gray-700">From</label>
-                              <input
-                                type="number"
-                                id="from"
-                                min="1"
-                                max="5"
-                                value={ratingRange.from}
-                                onChange={handleRatingChange}
-                                className="size-5 rounded border-gray-300"
-                              />
-                            </div>
-                            <div className="flex justify-between items-center">
-                              <label htmlFor="to" className="text-sm font-medium text-gray-700">To</label>
-                              <input
-                                type="number"
-                                id="to"
-                                min="1"
-                                max="5"
-                                value={ratingRange.to}
-                                onChange={handleRatingChange}
-                                className="size-5 rounded border-gray-300"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </details>
-                  </div>
-                )}
-              </div>
             </aside>
 
             <main className="lg:w-3/4">
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {filteredLawyers.map((lawyer) => (
-                  <div key={lawyer.id} className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md">
-                    <img
-                      src={lawyer.imageUrl}
-                      alt={lawyer.name}
-                      className="w-full h-32 object-cover"
+  <div className="relative lg:hidden">
+    <button
+      onClick={() => setDropdownOpen(!dropdownOpen)}
+      className="text-sm font-medium text-gray-700"
+    >
+      Filters
+    </button>
+
+    {dropdownOpen && (
+      <div className="absolute top-full right-0 z-40 mt-2 w-full bg-white border border-gray-300 shadow-lg">
+        <div className="p-4">
+          <div>
+            <label htmlFor="SortByMobile" className="block text-xs font-medium text-gray-700"> Sort By </label>
+            <select id="SortByMobile" className="mt-1 rounded border-gray-300 text-sm" onChange={handleSortChange} value={sortBy}>
+              <option value="">Sort By</option>
+              <option value="Experience, DESC">Experience, DESC</option>
+              <option value="Experience, ASC">Experience, ASC</option>
+              <option value="Rating, DESC">Rating, DESC</option>
+              <option value="Rating, ASC">Rating, ASC</option>
+            </select>
+          </div>
+
+          <div className="mt-4">
+            <p className="block text-xs font-medium text-gray-700">Filters</p>
+            <div className="space-y-4">
+              <details className="overflow-hidden rounded border border-gray-300">
+                <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
+                  <span className="text-sm font-medium">Specialization</span>
+                  <span className="transition group-open:-rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </span>
+                </summary>
+
+                <div className="border-t border-gray-200 bg-white">
+                  <header className="flex items-center justify-between p-4">
+                    <span className="text-sm text-gray-700">{selectedSpecializations.length} Selected</span>
+                    <button
+                      type="button"
+                      className="text-sm text-gray-900 underline underline-offset-4"
+                      onClick={() => setSelectedSpecializations([])}
+                    >
+                      Reset
+                    </button>
+                  </header>
+
+                  <ul className="space-y-1 border-t border-gray-200 p-4">
+                    {["Criminal Law", "Corporate Law", "Family Law"].map((specialization) => (
+                      <li key={specialization}>
+                        <label className="inline-flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            value={specialization}
+                            className="size-5 rounded border-gray-300"
+                            checked={selectedSpecializations.includes(specialization)}
+                            onChange={handleSpecializationChange}
+                          />
+                          <span className="text-sm font-medium text-gray-700">{specialization}</span>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </details>
+
+              <details className="overflow-hidden rounded border border-gray-300">
+                <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
+                  <span className="text-sm font-medium">Location</span>
+                  <span className="transition group-open:-rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </span>
+                </summary>
+
+                <div className="border-t border-gray-200 bg-white">
+                  <header className="flex items-center justify-between p-4">
+                    <span className="text-sm text-gray-700">{selectedLocations.length} Selected</span>
+                    <button
+                      type="button"
+                      className="text-sm text-gray-900 underline underline-offset-4"
+                      onClick={() => setSelectedLocations([])}
+                    >
+                      Reset
+                    </button>
+                  </header>
+
+                  <ul className="space-y-1 border-t border-gray-200 p-4">
+                    {["New York", "Los Angeles", "Chicago", "San Francisco", "Houston"].map((location) => (
+                      <li key={location}>
+                        <label className="inline-flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            value={location}
+                            className="size-5 rounded border-gray-300"
+                            checked={selectedLocations.includes(location)}
+                            onChange={handleLocationChange}
+                          />
+                          <span className="text-sm font-medium text-gray-700">{location}</span>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </details>
+
+              <details className="overflow-hidden rounded border border-gray-300">
+                <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
+                  <span className="text-sm font-medium">Rating</span>
+                  <span className="transition group-open:-rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-4 w-4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </span>
+                </summary>
+
+                <div className="border-t border-gray-200 bg-white">
+                  <header className="flex items-center justify-between p-4">
+                    <span className="text-sm text-gray-700">Rating Range</span>
+                    <button
+                      type="button"
+                      className="text-sm text-gray-900 underline underline-offset-4"
+                      onClick={() => setRatingRange({ from: 1, to: 5 })}
+                    >
+                      Reset
+                    </button>
+                  </header>
+
+                  <div className="space-y-4 p-4">
+                    <label htmlFor="from" className="text-sm font-medium text-gray-700">From</label>
+                    <input
+                      id="from"
+                      type="number"
+                      min="1"
+                      max="5"
+                      value={ratingRange.from}
+                      onChange={handleRatingChange}
+                      className="w-full rounded border-gray-300 text-sm"
                     />
-                    <div className="p-4">
-                      <h3 className="text-lg font-semibold text-gray-900">{lawyer.name}</h3>
-                      <p className="text-sm text-gray-600">{lawyer.specialization}</p>
-                      <p className="text-sm text-gray-600">{lawyer.location}</p>
-                      <p className="text-sm text-gray-600">Experience: {lawyer.experience} years</p>
-                      <p className="text-sm text-gray-600">Rating: {lawyer.rating}</p>
-                    </div>
+
+                    <label htmlFor="to" className="text-sm font-medium text-gray-700">To</label>
+                    <input
+                      id="to"
+                      type="number"
+                      min="1"
+                      max="5"
+                      value={ratingRange.to}
+                      onChange={handleRatingChange}
+                      className="w-full rounded border-gray-300 text-sm"
+                    />
                   </div>
-                ))}
-              </div>
-            </main>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+
+  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {filteredLawyers.map((lawyer) => (
+      <div key={lawyer.id} className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md">
+        <img
+          src={lawyer.imageUrl}
+          alt={lawyer.name}
+          className="w-full h-32 object-cover"
+        />
+        <div className="p-4">
+          <h3 className="text-lg font-semibold text-gray-900">{lawyer.name}</h3>
+          <p className="text-sm text-gray-600">{lawyer.specialization}</p>
+          <p className="text-sm text-gray-600">{lawyer.location}</p>
+          <p className="text-sm text-gray-600">Experience: {lawyer.experience} years</p>
+          <p className="text-sm text-gray-600">Rating: {lawyer.rating}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</main>
+
           </div>
         </div>
       </section>
