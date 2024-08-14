@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { LawyerLogin } from './pages/LawyerLogin';
+import LawyerProfile from './pages/LawyerProfile';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -30,6 +31,7 @@ function App() {
         <Route path="/Lawyers" element={<Lawyers/>}/>
         <Route path="/Chat" element={<Chat/>}/>
         <Route path="/LawyerLogin" element={<LawyerLogin/>}/>
+        <Route path="/LawyerProfile" element={<LawyerProfile/>}/>
       </Routes>
     <Footer/>
     </BrowserRouter>
