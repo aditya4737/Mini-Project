@@ -20,7 +20,7 @@ const CaseEinvoice = () => {
   };
 
   if (!formData) {
-    return <p>No case details available. Please submit the form first.</p>;
+    return <p className="text-center">No case details available. Please submit the form first.</p>;
   }
 
   return (

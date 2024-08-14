@@ -146,7 +146,7 @@ const CaseForm = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600"
+            className="w-full block rounded-md bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800"
           >
             Submit
           </button>

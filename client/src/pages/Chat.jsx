@@ -17,7 +17,8 @@ const Chat = () => {
           />
           <button
             type="button"
-            className="button absolute top-1/2 right-3 transform -translate-y-1/2 inline-block rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none"
+            
+            className="button absolute top-1/2 right-3 transform -translate-y-1/2 inline-block rounded-md bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800"
             aria-label="Send message"
           >
             Send
