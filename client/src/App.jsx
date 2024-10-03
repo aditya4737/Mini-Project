@@ -6,14 +6,10 @@ import Signup from './pages/Signup'
 import Signin from './pages/Signin'
 import CaseForm from './pages/CaseForm'
 import CaseEinvoice from './pages/CaseEinvoice'
-import Lawyers from './pages/Lawyers'
-import About from './pages/About'
-import Chat from './pages/Chat';
 import Home from './pages/Home';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { LawyerLogin } from './pages/LawyerLogin';
-import LawyerProfile from './pages/LawyerProfile';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -23,15 +19,11 @@ function App() {
     <Header/>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/About" element={<About/>}/>
         <Route path="/Signin" element={<Signin/>}/>
         <Route path="/Signup" element={<Signup/>}/>
         <Route path="/CaseForm" element={<CaseForm/>}/>
         <Route path="/CaseEinvoice" element={<CaseEinvoice/>}/>
-        <Route path="/Lawyers" element={<Lawyers/>}/>
-        <Route path="/Chat" element={<Chat/>}/>
-        <Route path="/LawyerLogin" element={<LawyerLogin/>}/>
-        <Route path="/LawyerProfile" element={<LawyerProfile/>}/>
+        {/* <Route path="/caseHistory" element={<caseHistory/>}/> */}
       </Routes>
     <Footer/>
     </BrowserRouter>
