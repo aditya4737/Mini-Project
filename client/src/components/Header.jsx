@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 
 const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+    
+  };
 
   return (
     <header className="bg-white">
@@ -12,26 +18,41 @@ const Header = () => {
           <nav aria-label="Global" className="hidden md:block">
             <ul className="flex items-center gap-6 text-sm">
               <li>
-                <Link to={"/"} className="text-black transition hover:text-gray-700"><b>Home</b></Link>
+                <Link to="/" className="text-black transition hover:text-gray-700"><b>Home</b></Link>
               </li>
             </ul>
           </nav>
 
           <div className="flex items-center gap-4">
             <div className="sm:flex sm:gap-4">
-              <Link
-                className="block rounded-md bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800"
-                to={"/Signin"}
-              >
-                Login
-              </Link>
+              {/* Check if the user is logged in */}
+              {user?.email ? (
+                <div className="flex items-center gap-4">
+                  <span className="text-black">{user.email}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-600"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-4">
+                  <Link
+                    className="block rounded-md bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800"
+                    to="/Signin"
+                  >
+                    Login
+                  </Link>
 
-              <Link
-                className="hidden rounded-md bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:bg-gray-100 sm:block"
-                to={"/Signup"}
-              >
-                Register
-              </Link>
+                  <Link
+                    className="hidden rounded-md bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:bg-gray-100 sm:block"
+                    to="/Signup"
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
             </div>
 
             <button
@@ -67,20 +88,33 @@ const Header = () => {
             <nav aria-label="Mobile navigation">
               <ul className="space-y-4 text-sm">
                 <li>
-                  <Link to={"/"} className="text-black transition hover:text-gray-700"> Home </Link>
+                  <Link to="/" className="text-black transition hover:text-gray-700"> Home </Link>
                 </li>
                 <li>
-                  <Link to={"/About"} className="text-black transition hover:text-gray-700"> About </Link>
+                  <Link to="/About" className="text-black transition hover:text-gray-700"> About </Link>
                 </li>
                 <li>
-                  <Link to={"/Services"} className="text-black transition hover:text-gray-700"> Services </Link>
+                  <Link to="/Services" className="text-black transition hover:text-gray-700"> Services </Link>
                 </li>
-                <li>
-                  <Link to={"/Signin"} className="text-black transition hover:text-gray-700"> Login </Link>
-                </li>
-                <li>
-                  <Link to={"/Signup"} className="text-black transition hover:text-gray-700"> Register </Link>
-                </li>
+                {user?.email ? (
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="text-black transition hover:text-gray-700"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                ) : (
+                  <>
+                    <li>
+                      <Link to="/Signin" className="text-black transition hover:text-gray-700"> Login </Link>
+                    </li>
+                    <li>
+                      <Link to="/Signup" className="text-black transition hover:text-gray-700"> Register </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </nav>
           </div>

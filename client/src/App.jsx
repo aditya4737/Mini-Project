@@ -9,13 +9,14 @@ import CaseEinvoice from './pages/CaseEinvoice'
 import Home from './pages/Home';
 import Header from './components/Header';
 import Footer from './components/Footer';
-
+import { AuthProvider } from "./Context/AuthContext";
 
 function App() {
-  const [count, setCount] = useState(0)
+ 
 
   return (
     <BrowserRouter>
+    <AuthProvider>
     <Header/>
       <Routes>
         <Route path="/" element={<Home/>}/>
@@ -26,6 +27,7 @@ function App() {
         {/* <Route path="/caseHistory" element={<caseHistory/>}/> */}
       </Routes>
     <Footer/>
+    </AuthProvider>
     </BrowserRouter>
   )
 }

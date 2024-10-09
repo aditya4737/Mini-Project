@@ -1,77 +1,19 @@
-
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
 
 const FormTwo = () => {
-    const navigate = useNavigate();
-
-    // Consolidated state for all form data
     const [formData, setFormData] = useState({
-        respondentDetails: [{ name: "", age: "", sex: "", relation: "" }],
-        childrenDetails: [{ name: "", age: "", sex: "", residingWith: "" }],
-        protectionOrder: "",
-        residenceOrder: "",
-        maintenanceOrder: "",
-        custodyOrder: "",
-        compensationOrder: "",
-        anyOtherOrder: "",
-        otherOrderDetails: "",
-        counsellor: "",
-        counsellorDetails: "",
-        policeAssistance: "",
-        policeAssistanceDetails: "",
-        violenceType: [
-            { id: "physicalViolence", label: "Physical Violence", checked: false },
-            { id: "sexualViolence", label: "Sexual Violence", checked: false },
-            { id: "emotionalViolence", label: "Emotional Violence", checked: false },
-            { id: "economicViolence", label: "Economic Violence", checked: false },
-            { id: "dowryViolence", label: "Dowry Violence", checked: false },
-        ],
-
-
-        sexualViolence: {
-            forcedIntercourse: false,
-            forcedPornography: false,
-            forcedEntertainment: false,
-            otherSexualAbuse: [""],
-        },
-        economicViolence: {
-            noMoneyForChildren: false,
-            noFoodClothesMedicine: false,
-            forcedOutOfHouse: false,
-            preventAccessHouse: false,
-            preventEmployment: false,
-            noEmployment: false,
-            nonPaymentRent: false,
-            noUseHouseholdItems: false,
-            sellingStridhan: false,
-            takingSalary: false,
-            disposingStridhan: false,
-            nonPaymentBills: false,
-            otherEconomicViolence: "",
-        },
-        verbalEmotionalAbuse: {
-            accusation: false,
-            insultDowry: false,
-            insultNoMaleChild: false,
-            insultNoChild: false,
-            demeaningRemarks: false,
-            ridicule: false,
-            nameCalling: false,
-            forcingNotAttendSchool: false,
-            preventingJob: false,
-            preventingLeavingHouse: false,
-            preventingMeetingPerson: false,
-            forcedMarriage: false,
-            preventingMarriageOfChoice: false,
-            forcedMarriageAgainstWill: false,
-            otherVerbalAbuse: "",
-        },
-        incidents: [{ date: "", time: "", place: "", person: "" }],
-        dowryDemands: [{ id: Date.now(), value: "" }],
+        sexualViolence: {},
+        verbalEmotionalAbuse: { otherVerbalAbuse: '' },
+        economicViolence: { otherEconomicViolence: '' },
+        verbalEmotionalAbuse: { otherVerbalAbuse: [] },  // Initialize as an array
+        economicViolence: { otherEconomicViolence: [] },  // Initialize as an array
+        additionalInformation: { otherDetails: '' }
     });
 
-    const [newSexualAbuse, setNewSexualAbuse] = useState(initialValue);
+    const [newSexualAbuse, setNewSexualAbuse] = useState('');
+    const [newVerbalAbuse, setNewVerbalAbuse] = useState('');
+    const [newEconomicViolence, setNewEconomicViolence] = useState('');
+    const [newAdditionalInfo, setNewAdditionalInfo] = useState('');
 
     const sexualViolenceField = [
         { name: "forcedIntercourse", label: "Forced Intercourse" },
@@ -111,96 +53,149 @@ const FormTwo = () => {
         { id: 'nonPaymentBills', label: 'Non-payment of other bills such as electricity, etc.' },
     ];
 
-    const dowryHarassmentField = [
-        { name: "demandingDowry", label: "Demanding Dowry" },
-        { name: "harassmentForDowry", label: "Harassment for Dowry" }
-    ];
-
-    // Function to handle changes to the "Other Sexual Abuse" inputs
-    const handleOtherAbuseChange = (index, value) => {
-        const updatedOtherAbuse = [...formData.sexualViolence.otherSexualAbuse];
-        updatedOtherAbuse[index] = value;
-        setFormData({
-            ...formData,
-            sexualViolence: {
-                ...formData.sexualViolence,
-                otherSexualAbuse: updatedOtherAbuse,
-            },
-        });
-    };
-
-    // Function to add a new empty input field for "Other Sexual Abuse"
-    const addOtherSexualAbuseField = () => {
-        setFormData({
-            ...formData,
-            sexualViolence: {
-                ...formData.sexualViolence,
-                otherSexualAbuse: [...formData.sexualViolence.otherSexualAbuse, ''],
-            },
-        });
-    };
-
-    // Function to remove an "Other Sexual Abuse" input field
-    const removeOtherSexualAbuseField = (index) => {
-        const updatedOtherAbuse = formData.sexualViolence.otherSexualAbuse.filter((_, i) => i !== index);
-        setFormData({
-            ...formData,
-            sexualViolence: {
-                ...formData.sexualViolence,
-                otherSexualAbuse: updatedOtherAbuse,
-            },
-        });
-    };
-
-
-
-    // Handler for checkbox inputs
-    const handleCheckboxChange = (section, field) => {
+    const handleInputChange = (category, field, value) => {
         setFormData((prev) => ({
             ...prev,
-            [section]: {
-                ...prev[section],
-                [field]: !prev[section][field],
-            },
-        }));
-    };
-
-    // Handler for text inputs
-    const handleInputChange = (section, field, value) => {
-        setFormData((prev) => ({
-            ...prev,
-            [section]: {
-                ...prev[section],
+            [category]: {
+                ...prev[category],
                 [field]: value,
             },
         }));
     };
 
-    // Handler for dynamic fields like respondents and children
-    const handleDynamicChange = (section, index, field, value) => {
-        setFormData((prev) => ({
-            ...prev,
-            [section]: prev[section].map((item, i) =>
-                i === index ? { ...item, [field]: value } : item
-            ),
-        }));
+    const addOtherSexualAbuseField = () => {
+        if (newSexualAbuse) {
+            setFormData((prev) => ({
+                ...prev,
+                sexualViolence: {
+                    ...prev.sexualViolence,
+                    otherSexualAbuse: [...(prev.sexualViolence.otherSexualAbuse || []), newSexualAbuse],
+                },
+            }));
+            setNewSexualAbuse('');
+        }
     };
 
-    // Adding a new entry (e.g., a new dowry demand)
-    const addNewEntry = (section) => {
-        setFormData((prev) => ({
-            ...prev,
-            [section]: [...prev[section], { id: Date.now(), value: "" }],
-        }));
+    const removeOtherSexualAbuseField = (index) => {
+        setFormData((prev) => {
+            const updatedAbuse = [...prev.sexualViolence.otherSexualAbuse];
+            updatedAbuse.splice(index, 1);
+            return {
+                ...prev,
+                sexualViolence: {
+                    ...prev.sexualViolence,
+                    otherSexualAbuse: updatedAbuse,
+                },
+            };
+        });
     };
 
-    // Removing an entry (e.g., removing a dowry demand)
-    const removeEntry = (section, id) => {
-        setFormData((prev) => ({
-            ...prev,
-            [section]: prev[section].filter((item) => item.id !== id),
-        }));
+    const addOtherVerbalAbuseField = () => {
+        if (newVerbalAbuse) {
+            setFormData((prev) => ({
+                ...prev,
+                verbalEmotionalAbuse: {
+                    ...prev.verbalEmotionalAbuse,
+                    otherVerbalAbuse: [...(prev.verbalEmotionalAbuse.otherVerbalAbuse || []), newVerbalAbuse],
+                },
+            }));
+            setNewVerbalAbuse('');
+        }
     };
+
+    const removeOtherVerbalAbuseField = (index) => {
+        setFormData((prev) => {
+            const updatedAbuse = [...prev.verbalEmotionalAbuse.otherVerbalAbuse];
+            updatedAbuse.splice(index, 1);
+            return {
+                ...prev,
+                verbalEmotionalAbuse: {
+                    ...prev.verbalEmotionalAbuse,
+                    otherVerbalAbuse: updatedAbuse,
+                },
+            };
+        });
+    };
+
+
+    const addOtherEconomicViolenceField = () => {
+        if (newEconomicViolence) {
+            setFormData((prev) => ({
+                ...prev,
+                economicViolence: {
+                    ...prev.economicViolence,
+                    otherEconomicViolence: [...(prev.economicViolence.otherEconomicViolence || []), newEconomicViolence],
+                },
+            }));
+            setNewEconomicViolence('');
+        }
+    };
+
+    const removeOtherEconomicViolenceField = (index) => {
+        setFormData((prev) => {
+            const updatedViolence = [...prev.economicViolence.otherEconomicViolence];
+            updatedViolence.splice(index, 1);
+            return {
+                ...prev,
+                economicViolence: {
+                    ...prev.economicViolence,
+                    otherEconomicViolence: updatedViolence,
+                },
+            };
+        });
+    };
+
+
+    const addOtherAdditionalInfo = () => {
+        if (newAdditionalInfo) {
+            setFormData((prev) => ({
+                ...prev,
+                additionalInformation: {
+                    ...prev.additionalInformation,
+                    otherAdditionalInfo: [...(prev.additionalInformation.otherAdditionalInfo || []), newAdditionalInfo],
+                },
+            }));
+            setNewAdditionalInfo('');
+        }
+    };
+
+    const removeOtherAdditionalInfo = (index) => {
+        setFormData((prev) => {
+            const updatedInfo = [...prev.additionalInformation.otherAdditionalInfo];
+            updatedInfo.splice(index, 1);
+            return {
+                ...prev,
+                additionalInformation: {
+                    ...prev.additionalInformation,
+                    otherAdditionalInfo: updatedInfo,
+                },
+            };
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('http://localhost:3300/endpoint', {
+                method: 'POST', // or 'PUT' based on your use case
+                headers: {
+                    'Content-Type': 'application/json', // Set the content type as JSON
+                },
+                body: JSON.stringify(formData), // Convert your data to a JSON string
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            console.log('Success:', result);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded shadow-md">
@@ -214,7 +209,7 @@ const FormTwo = () => {
                                 <input
                                     type="checkbox"
                                     className="form-checkbox"
-                                    checked={formData.sexualViolence[field.name]}
+                                    checked={formData.sexualViolence[field.name] || false}
                                     onChange={(e) =>
                                         handleInputChange('sexualViolence', field.name, e.target.checked)
                                     }
@@ -225,20 +220,19 @@ const FormTwo = () => {
                     ))}
 
                     {/* Display Added Other Sexual Abuse Entries as Text */}
-{formData.sexualViolence.otherSexualAbuse.map((abuse, index) => (
-    <div key={index} className="mb-4 flex items-center">
-        <span>{abuse}</span>
-        {/* Remove Other Sexual Abuse Button */}
-        <button
-            type="button"
-            onClick={() => removeOtherSexualAbuseField(index)}
-            className="text-red-500 hover:underline ml-4"
-        >
-            Remove
-        </button>
-    </div>
-))}
-
+                    {formData.sexualViolence.otherSexualAbuse?.map((abuse, index) => (
+                        <div key={index} className="mb-4 flex items-center">
+                            <span>{abuse}</span>
+                            {/* Remove Other Sexual Abuse Button */}
+                            <button
+                                type="button"
+                                onClick={() => removeOtherSexualAbuseField(index)}
+                                className="text-red-500 hover:underline ml-4"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
 
                     {/* Add Other Sexual Abuse Input */}
                     <div className="mb-4">
@@ -250,7 +244,6 @@ const FormTwo = () => {
                             value={newSexualAbuse}
                             onChange={(e) => setNewSexualAbuse(e.target.value)}
                         />
-
                         {/* Add Button */}
                         <button
                             type="button"
@@ -262,11 +255,6 @@ const FormTwo = () => {
                     </div>
                 </fieldset>
 
-
-
-
-
-
                 {/* Verbal and Emotional Abuse Section */}
                 <h2 className="text-lg font-bold mb-2">Verbal and Emotional Abuse</h2>
                 <fieldset className="mb-4">
@@ -276,7 +264,7 @@ const FormTwo = () => {
                                 <input
                                     type="checkbox"
                                     className="form-checkbox"
-                                    checked={formData.verbalEmotionalAbuse[field.name]}
+                                    checked={formData.verbalEmotionalAbuse[field.name] || false}
                                     onChange={(e) =>
                                         handleInputChange('verbalEmotionalAbuse', field.name, e.target.checked)
                                     }
@@ -285,83 +273,146 @@ const FormTwo = () => {
                             </label>
                         </div>
                     ))}
+                    {/* Display Added Other Verbal Abuse Entries as Text */}
+                    {formData.verbalEmotionalAbuse.otherVerbalAbuse?.map((abuse, index) => (
+                        <div key={index} className="mb-4 flex items-center">
+                            <span>{abuse}</span>
+                            {/* Remove Other Verbal Abuse Button */}
+                            <button
+                                type="button"
+                                onClick={() => removeOtherVerbalAbuseField(index)}
+                                className="text-red-500 hover:underline ml-4"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
+
+                    {/* Add Other Verbal Abuse Input */}
                     <div className="mb-4">
-                        <label className="block">Other Verbal Abuse:</label>
+                        <label className="block">Add Other Verbal Abuse:</label>
                         <input
                             type="text"
                             className="form-input mt-1 block w-full"
                             placeholder="Describe any other verbal abuse"
-                            value={formData.verbalEmotionalAbuse.otherVerbalAbuse}
-                            onChange={(e) =>
-                                handleInputChange('verbalEmotionalAbuse', 'otherVerbalAbuse', e.target.value)
-                            }
+                            value={newVerbalAbuse}
+                            onChange={(e) => setNewVerbalAbuse(e.target.value)}
                         />
+                        {/* Add Button */}
+                        <button
+                            type="button"
+                            onClick={addOtherVerbalAbuseField}
+                            className="text-blue-500 hover:underline mt-2"
+                        >
+                            Add
+                        </button>
                     </div>
-                </fieldset>
 
+                </fieldset>
 
                 {/* Economic Violence Section */}
                 <h2 className="text-lg font-bold mb-2">Economic Violence</h2>
-                {economicViolenceField.map((field) => (
-                    <div key={field.name} className="mb-2">
-                        <label className="inline-flex items-center">
-                            <input
-                                type="checkbox"
-                                className="form-checkbox"
-                                checked={formData.economicViolence[field.name]}
-                                onChange={(e) =>
-                                    handleInputChange('economicViolence', field.name, e.target.checked)
-                                }
-                            />
-                            <span className="ml-2">{field.label}</span>
-                        </label>
-                    </div>
-                ))}
-                <div className="mb-4">
-                    <label className="block">Other Economic Violence:</label>
-                    <input
-                        type="text"
-                        className="form-input mt-1 block w-full"
-                        value={formData.economicViolence.otherEconomicViolence}
-                        onChange={(e) =>
-                            handleInputChange('economicViolence', 'otherEconomicViolence', e.target.value)
-                        }
-                    />
-                </div>
+                <fieldset className="mb-4">
+                    {economicViolenceField.map((field) => (
+                        <div key={field.name} className="mb-2">
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="checkbox"
+                                    className="form-checkbox"
+                                    checked={formData.economicViolence[field.name] || false}
+                                    onChange={(e) =>
+                                        handleInputChange('economicViolence', field.name, e.target.checked)
+                                    }
+                                />
+                                <span className="ml-2">{field.label}</span>
+                            </label>
+                        </div>
+                    ))}
+                    {/* Display Added Other Economic Violence Entries as Text */}
+                    {formData.economicViolence.otherEconomicViolence?.map((violence, index) => (
+                        <div key={index} className="mb-4 flex items-center">
+                            <span>{violence}</span>
+                            {/* Remove Other Economic Violence Button */}
+                            <button
+                                type="button"
+                                onClick={() => removeOtherEconomicViolenceField(index)}
+                                className="text-red-500 hover:underline ml-4"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
 
-                {/* Dowry Related Harassment Section */}
-                {/* <h2 className="text-lg font-bold mb-2">Dowry Related Harassment</h2>
-                {formData.dowryHarassmentField.map((demand, index) => (
-                    <div key={demand.id} className="mb-2">
-                        <label className="block">Dowry Demand {index + 1}:</label>
+                    {/* Add Other Economic Violence Input */}
+                    <div className="mb-4">
+                        <label className="block">Add Other Economic Violence:</label>
                         <input
                             type="text"
                             className="form-input mt-1 block w-full"
-                            value={demand.value}
-                            onChange={(e) =>
-                                handleInputChange(
-                                    'dowryRelatedHarassment',
-                                    `dowryDemands.${index}`,
-                                    e.target.value
-                                )
-                            }
+                            placeholder="Describe any other economic violence"
+                            value={newEconomicViolence}
+                            onChange={(e) => setNewEconomicViolence(e.target.value)}
                         />
+                        {/* Add Button */}
+                        <button
+                            type="button"
+                            onClick={addOtherEconomicViolenceField}
+                            className="text-blue-500 hover:underline mt-2"
+                        >
+                            Add
+                        </button>
                     </div>
-                ))}
-                <div className="mb-4">
-                    <label className="block">Other Dowry Details:</label>
-                    <input
-                        type="text"
-                        className="form-input mt-1 block w-full"
-                        value={formData.dowryRelatedHarassment.otherDowryDetails}
-                        onChange={(e) =>
-                            handleInputChange('dowryRelatedHarassment', 'otherDowryDetails', e.target.value)
-                        }
-                    />
-                </div> */}
 
+                </fieldset>
+
+                {/* Additional Information Section */}
+                <h2 className="text-lg font-bold mb-2">Additional Information</h2>
+                <fieldset className="mb-4">
+                    {/* Display Added Other Additional Information */}
+                    {formData.additionalInformation.otherAdditionalInfo?.map((info, index) => (
+                        <div key={index} className="mb-4 flex items-center">
+                            <span>{info}</span>
+                            {/* Remove Other Additional Info Button */}
+                            <button
+                                type="button"
+                                onClick={() => removeOtherAdditionalInfo(index)}
+                                className="text-red-500 hover:underline ml-4"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
+
+                    {/* Add Other Additional Information Input */}
+                    <div className="mb-4">
+                        <label className="block">Add Other Information:</label>
+                        <input
+                            type="text"
+                            className="form-input mt-1 block w-full"
+                            placeholder="Add any additional information"
+                            value={newAdditionalInfo}
+                            onChange={(e) => setNewAdditionalInfo(e.target.value)}
+                        />
+                        {/* Add Button */}
+                        <button
+                            type="button"
+                            onClick={addOtherAdditionalInfo}
+                            className="text-blue-500 hover:underline mt-2"
+                        >
+                            Add
+                        </button>
+                    </div>
+                </fieldset>
+
+                {/* Submit Button */}
+                <div className="mt-6">
+                    <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+                        Submit
+                    </button>
+                </div>
             </form>
         </div>
     );
 };
+
 export default FormTwo;

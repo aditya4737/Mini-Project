@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 
-const FormOne = () => {
+const FormTwo = () => {
     const [formData, setFormData] = useState({
         complainantName: "",
         complainantContact: "",
@@ -71,9 +71,26 @@ const FormOne = () => {
         setFormData({ ...formData, violenceType: newViolenceType });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data: ", formData);
+        try {
+      const response = await fetch('http://localhost:3300/endpoint', {
+        method: 'POST', // or 'PUT' based on your use case
+        headers: {
+          'Content-Type': 'application/json', // Set the content type as JSON
+        },
+        body: JSON.stringify(formData), // Convert your data to a JSON string
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Success:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
     };
 
     return (
@@ -431,4 +448,4 @@ const FormOne = () => {
     );
 };
 
-export default FormOne;
+export default FormTwo;

@@ -23,12 +23,7 @@ const Signup = () => {
  const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const formData = {
-    name: 'Aditya',
-    email: '123@gmail.com',
-    password: '123',
-    confirm_password: '123',
-  };
+ 
 
   try {
     const response = await fetch('http://localhost:3300/api/auth/signup', {

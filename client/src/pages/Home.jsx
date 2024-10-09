@@ -3,6 +3,7 @@ import React from 'react'
 import IconChatbox from '../components/Icons/ChatIcon';
 import FormOne from './form/form-1';
 import FormTwo from './form/form-2';
+import FormThree from './form/form-3'
 
 const Home = () => {
   return (
@@ -54,7 +55,8 @@ const Home = () => {
     //   </div>
     // </section>
     // <FormOne></FormOne>
-    <FormTwo></FormTwo>
+    // <FormTwo></FormTwo>
+    <FormThree></FormThree>
   )
 }
 

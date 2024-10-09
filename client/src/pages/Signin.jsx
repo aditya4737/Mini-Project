@@ -97,8 +97,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../Context/AuthContext';
 
 const Signin = () => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -118,17 +120,11 @@ const Signin = () => {
     e.preventDefault();
     try {
       // Replace with your API endpoint
-      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-
-      // Assuming you get a token back
-      const { token } = response.data;
-
-      if (token) {
-        // Store the token in localStorage
-        localStorage.setItem('token', token);
-
-        // Redirect to the dashboard or home page
-        navigate('/dashboard');
+      const response = await axios.post('http://localhost:3300/api/auth/login', formData);
+      // resp =  await response.json()
+            if(response.data.message =="Login successful"){
+        login(formData.password, formData.email, "1");
+        navigate("/")
       }
     } catch (err) {
       console.error(err.response ? err.response.data : err.message);
