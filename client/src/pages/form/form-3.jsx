@@ -12,6 +12,7 @@ const FormThree = () => {
     dowryRelatedHarassment: { otherDowryDetails: '' },
     protectionOrder: '',
     otherOrderDetails: '',
+    legalOrders: [], 
   });
   const [otherOrders, setOtherOrders] = useState([]);
   const [assistanceOptions, setAssistanceOptions] = useState([
@@ -90,6 +91,13 @@ const FormThree = () => {
     e.preventDefault();
     console.log(formData, dowryDemands, attachedDocuments, otherOrders, assistanceOptions);
     // Handle form submission logic here
+  };
+
+  const handleAddOtherOrder = () => {
+    if (formData.otherOrderDetails.trim() !== "") {
+      setOtherOrders([...otherOrders, formData.otherOrderDetails]);
+      setFormData({ ...formData, otherOrderDetails: "" }); // Clear the input field after adding
+    }
   };
 
 
@@ -336,3 +344,12 @@ const FormThree = () => {
 };
 
 export default FormThree;
+// import React from 'react'
+
+// function FormThree() {
+//   return (
+//     <div >FormThree</div>
+//   )
+// }
+
+// export default FormThree;
