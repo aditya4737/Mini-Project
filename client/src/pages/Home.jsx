@@ -36,7 +36,7 @@ function Home() {
         description="Schedule appointments with your chosen lawyer directly from the platform. Our
           appointment booking system integrates with your calendar, ensuring you receive timely
           consultations at your convenience."
-        link="/appointment-booking"
+        link="/userdata"
         bgColor="bg-purple-300" // Soft purple background
       />
 

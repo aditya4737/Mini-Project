@@ -70,6 +70,7 @@ console.log(first_name, email, password);
 
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
+console.log('function has been called just now ');
 
   try {
     // Find the user by email
@@ -113,8 +114,11 @@ app.post('/api/auth/login', async (req, res) => {
 });
 //get routes
 
-app.get('/api/formone', authMiddleware, async (req, res) => {
+app.get('/api/data/formone', authMiddleware, async (req, res) => {
+  console.log('the route has been called one' );
   try {
+    console.log('the route has been called');
+    
     const userId = req.user.id; // Get authenticated user's ID
     const formOneData = await DomesticIncidentReport.findOne({ user: userId }); // Fetch FormOne data for user
 
@@ -132,8 +136,10 @@ app.get('/api/formone', authMiddleware, async (req, res) => {
 });
 
 // GET route for FormTwo
-app.get('/api/formtwo', authMiddleware, async (req, res) => {
+app.get('/api/data/formtwo', authMiddleware, async (req, res) => {
+  console.log('the route has been called two');
   try {
+
     const userId = req.user.id; // Get authenticated user's ID
     const formTwoData = await FormTwo.findOne({ user: userId }); // Fetch FormTwo data for user
 
@@ -149,7 +155,8 @@ app.get('/api/formtwo', authMiddleware, async (req, res) => {
 });
 
 // GET route for FormThree
-app.get('/api/formthree', authMiddleware, async (req, res) => {
+app.get('/api/data/formthree', authMiddleware, async (req, res) => {
+  console.log('the route has been called three');
   try {
     const userId = req.user.id; // Get authenticated user's ID
     const formThreeData = await FormThree.findOne({ user: userId }); // Fetch FormThree data for user
@@ -269,185 +276,154 @@ app.post('/api/formthree', authMiddleware, async (req, res) => {
 
 
 
-app.post('/api/formone', authMiddleware, async (req, res) => {
-  try {
-    console.log('Received formOne submission:', req.body);
-    if (!req.user) {
-      return res.status(401).json({ message: 'Unauthorized: User not found' });
-    }
-    const userId1 = req.user.id;  // This should log the authenticated user's ID
-    console.log('Authenticated user ID:', userId1);
+// app.post('/api/formone', authMiddleware, async (req, res) => {
+//   try {
+//     console.log('Received formOne submission:', req.body);
+//     if (!req.user) {
+//       return res.status(401).json({ message: 'Unauthorized: User not found' });
+//     }
+//     const userId1 = req.user.id;  // This should log the authenticated user's ID
+//     console.log('Authenticated user ID:', userId1);
 
-    const {
-      complainantName,
-      complainantContact,
-      respondentDetails,
-      childrenDetails,
-      incidents,
-      sexualViolence,
-      otherSexualAbuse,
-      verbalEmotionalAbuse,
-      otherVerbalAbuse,
-      economicViolence,
-      otherEconomicViolence,
-      additionalInfo
-    } = req.body;
+//     const {
+//       complainantName,
+//       complainantContact,
+//       respondentDetails,
+//       childrenDetails,
+//       incidents,
+//       sexualViolence,
+//       otherSexualAbuse,
+//       verbalEmotionalAbuse,
+//       otherVerbalAbuse,
+//       economicViolence,
+//       otherEconomicViolence,
+//       additionalInfo
+//     } = req.body;
 
-    const userId = req.user.id;  // Get user ID from the authenticated token
+//     const userId = req.user.id;  // Get user ID from the authenticated token
 
-    // Create a new Domestic Incident Report
-    const newIncidentReport = new DomesticIncidentReport({
-      complainantName,
-      complainantContact,
-      respondentDetails,
-      childrenDetails,
-      incidents,
-      sexualViolence,
-      otherSexualAbuse,
-      verbalEmotionalAbuse,
-      otherVerbalAbuse,
-      economicViolence,
-      otherEconomicViolence,
-      additionalInfo,
-      user: userId  // Link the logged-in user to the form submission
-    });
+//     // Create a new Domestic Incident Report
+//     const newIncidentReport = new DomesticIncidentReport({
+//       complainantName,
+//       complainantContact,
+//       respondentDetails,
+//       childrenDetails,
+//       incidents,
+//       sexualViolence,
+//       otherSexualAbuse,
+//       verbalEmotionalAbuse,
+//       otherVerbalAbuse,
+//       economicViolence,
+//       otherEconomicViolence,
+//       additionalInfo,
+//       user: userId  // Link the logged-in user to the form submission
+//     });
 
-    // Save the form data to MongoDB
-    await newIncidentReport.save();
+//     // Save the form data to MongoDB
+//     await newIncidentReport.save();
 
-    // Send the success response and return
-    return res.status(201).json({ message: 'Form data submitted successfully', report: newIncidentReport });
-  } catch (error) {
-    console.error('Error submitting formOne:', error);
-    // Send the error response and return
-    return res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
+//     // Send the success response and return
+//     return res.status(201).json({ message: 'Form data submitted successfully', report: newIncidentReport });
+//   } catch (error) {
+//     console.error('Error submitting formOne:', error);
+//     // Send the error response and return
+//     return res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
 
 
 app.listen(port, () => {
   console.log('Server running on http://localhost:${port}');
 });
 
-//form two
 
-// import express from 'express';
-// import mongoose from 'mongoose';
-// import cookieParser from 'cookie-parser';
-// import cors from 'cors';
-// import bcrypt from 'bcryptjs';
-// import jwt from 'jsonwebtoken';
-// import User from './models/user.js';
-// import FormTwo from './models/formtwo.js';
-// import { authMiddleware } from './middleware/authMiddleware.js';
-
-// const app = express();
-// const port = 3300;
-
-// const corsOptions = {
-//   origin: 'http://localhost:5173',
-//   credentials: true,
-// };
-// app.use(cors(corsOptions));
-// app.use(express.json());
-// app.use(cookieParser());
-
-// const dbUri = 'mongodb://localhost:27017/case';
-// mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
-//   .then(() => console.log('Connected to MongoDB'))
-//   .catch(err => console.error('Failed to connect to MongoDB', err));
-
-// // User signup route
-// app.post('/api/auth/signup', async (req, res) => {
-//   const { first_name, email, password } = req.body;
+// app.post('/api/formone', authMiddleware, async (req, res) => {
 //   try {
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser) return res.status(400).json({ message: 'User already exists' });
+//       console.log('Received formOne submission:', req.body); // This should log the full body
+//       if (!req.user) {
+//           return res.status(401).json({ message: 'Unauthorized: User not found' });
+//       }
+//       const userId = req.user.id;  // This should log the authenticated user's ID
+//       console.log('Authenticated user ID:', userId);
 
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     const newUser = new User({ name: first_name, email, password: hashedPassword });
-//     await newUser.save();
+//       // Destructure the received data
+//       const {
+//           complainantName,
+//           complainantContact,
+//           respondentDetails,
+//           childrenDetails,
+//           incidents,
+//           sexualViolence,
+//           otherSexualAbuse,
+//           verbalEmotionalAbuse,
+//           otherVerbalAbuse,
+//           economicViolence,
+//           otherEconomicViolence,
+//           additionalInfo
+//       } = req.body;
 
-//     const token = jwt.sign({ id: newUser._id }, "vedant007822900567", { expiresIn: '1h' });
-//     res.cookie('token', token, { httpOnly: true });
-//     return res.status(201).json({ message: 'User registered successfully' });
+//       // Create a new Domestic Incident Report
+//       const newIncidentReport = new DomesticIncidentReport({
+//           complainantName,
+//           complainantContact,
+//           respondentDetails,
+//           childrenDetails,
+//           incidents,
+//           sexualViolence,
+//           otherSexualAbuse,
+//           verbalEmotionalAbuse,
+//           otherVerbalAbuse,
+//           economicViolence,
+//           otherEconomicViolence,
+//           additionalInfo,
+//           user: userId
+//       });
+
+//       // Save the form data to MongoDB
+//       await newIncidentReport.save();
+//       return res.status(201).json({ message: 'Form data submitted successfully', report: newIncidentReport });
 //   } catch (error) {
-//     return res.status(500).json({ message: 'Internal Server Error' });
+//       console.error('Error submitting formOne:', error);
+//       return res.status(500).json({ message: 'Internal Server Error' });
 //   }
 // });
+app.post('/api/formone', authMiddleware, async (req, res) => {
+  try {
+      console.log('Received formOne submission:', req.body);
+      if (!req.user) {
+          return res.status(401).json({ message: 'Unauthorized: User not found' });
+      }
+      const userId = req.user.id;
+      console.log('Authenticated user ID:', userId);
 
-// // User login route
-// app.post('/api/auth/login', async (req, res) => {
-//   const { email, password } = req.body;
-//   try {
-//     const user = await User.findOne({ email });
-//     if (!user) return res.status(400).json({ message: 'User not found' });
+      // Destructure the received data according to the new schema
+      const {
+          complainantName,
+          complainantContact,
+          respondents, // Adjusted to match the schema
+          children, // Adjusted to match the schema
+          incidents, // Adjusted to match the schema
+          violenceType, // Adjusted to match the schema
+          additionalInfo // Adjusted to match the schema
+      } = req.body;
 
-//     const isMatch = await bcrypt.compare(password, user.password);
-//     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+      // Create a new Domestic Incident Report
+      const newIncidentReport = new DomesticIncidentReport({
+          complainantName,
+          complainantContact,
+          respondents, // Use the adjusted variable
+          children, // Use the adjusted variable
+          incidents, // Use the adjusted variable
+          violenceType, // Use the adjusted variable
+          additionalInfo,
+          user: userId // Reference to the authenticated user
+      });
 
-//     const token = jwt.sign({ id: user._id }, "vedant007822900567", { expiresIn: '1h' });
-//     res.cookie('token', token, { httpOnly: true });
-//     return res.status(200).json({ message: 'Login successful' });
-//   } catch (error) {
-//     return res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// });
-
-// // Formtwo submission route (Protected)
-// app.post("/api/formtwo", authMiddleware, async (req, res) => {
-//   const { forcedIntercourse, forcedPornography, forcedEntertainment, otherSexualAbuse } = req.body;
-
-//   try {
-//     const formTwoData = new FormTwo({
-//       userId: req.user._id,
-//       forcedIntercourse,
-//       forcedPornography,
-//       forcedEntertainment,
-//       otherSexualAbuse
-//     });
-
-//     await formTwoData.save();
-//     res.status(201).json({ message: 'Form data saved successfully', data: formTwoData });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
-
-// app.listen(port, () => {
-//   console.log(`Server running on http://localhost:${port}`);
-// });
-
-
-// User login route
-// app.post('/api/auth/login', async (req, res) => {
-//   const { email, password } = req.body;
-
-//   try {
-//     const user = await User.findOne({ email });
-//     console.log(user);
-    
-//     if (!user) {
-//       return res.status(400).json({ message: 'User not found' });
-//     }
-
-//     // Check if password matches
-//     const isMatch = await bcrypt.compare(password, user.password);
-//     console.log(isMatch);
-    
-//     if (!isMatch) {
-//       return res.status(400).json({ message: 'Invalid credentials' });
-//     }
-
-//     // Generate JWT token
-//     const token = jwt.sign({ id: user._id },"vedant007822900567", { expiresIn: '1h' });
-
-//     // Set token as a cookie
-//     res.cookie('token', token, { httpOnly: true, });
-
-//     return res.status(200).json({ message: 'Login successful' });
-//   } catch (error) {
-//     console.error('Login error:', error);
-//     return res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// });
+      // Save the form data to MongoDB
+      await newIncidentReport.save();
+      return res.status(201).json({ message: 'Form data submitted successfully', report: newIncidentReport });
+  } catch (error) {
+      console.error('Error submitting formOne:', error);
+      return res.status(500).json({ message: 'Internal Server Error' });
+  }
+});

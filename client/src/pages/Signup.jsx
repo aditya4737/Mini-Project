@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 const Signup = () => {
   const [formData, setFormData] = useState({
     first_name: '',
@@ -11,7 +11,7 @@ const Signup = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);  // Track loading state
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -39,6 +39,7 @@ const Signup = () => {
 
     if (response.ok) {
       console.log('User created successfully:', result);
+      navigate("/signin");
     } else {
       // Handle specific error for user already exists
       if (result.message === 'User already exists') {

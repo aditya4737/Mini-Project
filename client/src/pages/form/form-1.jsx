@@ -76,32 +76,83 @@ const FormOne = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Retrieve the JWT token from localStorage
+          
             const token = localStorage.getItem('authToken');
-        
+            const email1= localStorage.getItem('email');
+            if(!email1){
+                navigate("/Signin");
+            }
             if (!token) {
               throw new Error("No token found. Please login again.");
             }
         
-            // Send the form data with Authorization token in headers
+          
             const response = await axios.post(
               'http://localhost:3300/api/formone',
-              formData, // the form data being submitted
+              formData, 
               {
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}` // Pass the token in Authorization header
+                  'Authorization': `Bearer ${token}` 
                 }
               }
             );
         
-            // Handle success response
+            
             console.log('Form submitted successfully:', response.data);
             navigate("/formtwo");
           } catch (err) {
             console.error(err.response ? err.response.data : err.message);
           }
       };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         const token = localStorage.getItem('authToken');
+    //         const email1 = localStorage.getItem('email');
+    // console.log(token , email1);
+    
+         
+    //         if (!token) {
+    //             throw new Error("No token found. Please login again.");
+    //         }
+    
+    //         // Ensure the formData contains the proper structure
+    //         const dataToSend = {
+    //             complainantName: formData.complainantName,
+    //             complainantContact: formData.complainantContact,
+    //             respondentDetails: respondentDetails,
+    //             childrenDetails: childrenDetails,
+    //             incidents: formData.incidents,
+    //             // If applicable, include any other fields you want to send
+    //             sexualViolence: {}, // Example: empty map if not used
+    //             otherSexualAbuse: [], // Example: empty array if not used
+    //             verbalEmotionalAbuse: {}, // Example: empty map if not used
+    //             otherVerbalAbuse: [], // Example: empty array if not used
+    //             economicViolence: {}, // Example: empty map if not used
+    //             otherEconomicViolence: [], // Example: empty array if not used
+    //             additionalInfo: "", // Example: empty string if not used
+    //         };
+    
+    //         const response = await axios.post(
+    //             'http://localhost:3300/api/formone',
+    //             dataToSend,
+    //             {
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': `Bearer ${token}`
+    //                 }
+    //             }
+    //         );
+    
+    //         console.log('Form submitted successfully:', response.data);
+    //         navigate("/formtwo");
+    //     } catch (err) {
+    //         console.error(err.response ? err.response.data : err.message);
+    //     }
+    // };
+    
+    
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded shadow-md">
@@ -249,7 +300,7 @@ const FormOne = () => {
                                     value={child.name}
                                     onChange={(e) => handleChildrenChange(index, e)}
                                     className="w-full px-4 py-3 border border-gray-300 rounded"
-                                    required
+                                    
                                 />
                             </div>
                             {/* Age and Sex Fields */}
@@ -263,7 +314,7 @@ const FormOne = () => {
                                         value={child.age}
                                         onChange={(e) => handleChildrenChange(index, e)}
                                         className="p-2 border border-gray-300 rounded"
-                                        required
+                                        
                                     />
                                 </div>
                                 <div className="flex flex-col">
@@ -274,7 +325,7 @@ const FormOne = () => {
                                         value={child.sex}
                                         onChange={(e) => handleChildrenChange(index, e)}
                                         className="p-2 border border-gray-300 rounded"
-                                        required
+                                        
                                     >
                                         <option value="">Select</option>
                                         <option value="male">Male</option>
@@ -294,7 +345,7 @@ const FormOne = () => {
                                     value={child.residingWith}
                                     onChange={(e) => handleChildrenChange(index, e)}
                                     className="w-full px-4 py-3 border border-gray-300 rounded"
-                                    required
+                                    
                                 />
                             </div>
                             {/* Remove Child Button */}
@@ -452,8 +503,8 @@ const FormOne = () => {
                     >
                         save
                     </button>
-                    <a href="/formtwo">save</a>
-                </div>+
+                    
+                </div>
 
             </form>
         </div>
