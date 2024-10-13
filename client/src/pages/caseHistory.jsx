@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CaseHistory = () => {
   const [cases, setCases] = useState([]);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Retrieve previously submitted cases from localStorage
@@ -14,19 +14,30 @@ const CaseHistory = () => {
 
   const generatePDF = (caseData) => {
     const doc = new jsPDF();
-    const { caseTitle, clientName, phoneNumber, caseDescription, caseDate, caseType, submittedOn } = caseData;
+    const {
+      caseTitle = 'N/A',
+      clientName = 'N/A',
+      phoneNumber = 'N/A',
+      caseDescription = 'N/A',
+      caseDate = 'N/A',
+      caseType = 'N/A',
+      submittedOn = 'N/A',
+    } = caseData;
+  
+    // Add text content
     doc.text('Case Details', 20, 20);
-    doc.text(`Case Title: ${caseTitle}`, 20, 30);
-    doc.text(`Client Name: ${clientName}`, 20, 40);
-    doc.text(`Phone Number: ${phoneNumber}`, 20, 50);
-    doc.text(`Description: ${caseDescription}`, 20, 60);
-    doc.text(`Case Date: ${caseDate}`, 20, 70);
-    doc.text(`Case Type: ${caseType}`, 20, 80);
-    doc.text(`Submitted On: ${submittedOn}`, 20, 90);
+    doc.text(`Case Title: ${String(caseTitle)}`, 20, 30);
+    doc.text(`Client Name: ${String(clientName)}`, 20, 40);
+    doc.text(`Phone Number: ${String(phoneNumber)}`, 20, 50);
+    doc.text(`Description: ${String(caseDescription)}`, 20, 60);
+    doc.text(`Case Date: ${String(caseDate)}`, 20, 70);
+    doc.text(`Case Type: ${String(caseType)}`, 20, 80);
+    doc.text(`Submitted On: ${String(submittedOn)}`, 20, 90);
 
-    // Save the PDF with a dynamic name based on case date and type
+    // Save the PDF with a sanitized name based on case date and type
     const fileName = `${caseDate.replace(/-/g, '')}_${caseType.replace(/\s+/g, '-')}.pdf`;
-    doc.save(fileName);
+    const sanitizedFileName = fileName.replace(/[^a-zA-Z0-9-_]/g, '');
+    doc.save(sanitizedFileName);
   };
 
   return (

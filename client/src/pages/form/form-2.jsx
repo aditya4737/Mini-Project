@@ -1,13 +1,53 @@
+
 import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+
+
 
 const FormTwo = () => {
     const [formData, setFormData] = useState({
-        sexualViolence: {},
-        verbalEmotionalAbuse: { otherVerbalAbuse: '' },
-        economicViolence: { otherEconomicViolence: '' },
-        verbalEmotionalAbuse: { otherVerbalAbuse: [] },  // Initialize as an array
-        economicViolence: { otherEconomicViolence: [] },  // Initialize as an array
-        additionalInformation: { otherDetails: '' }
+        sexualViolence: {
+            forcedIntercourse: false,
+            forcedPornography: false,
+            forcedEntertainment: false,
+            otherSexualAbuse: []
+        },
+        verbalEmotionalAbuse: {
+            accusation: false,
+            insultDowry: false,
+            insultNoMaleChild: false,
+            insultNoChild: false,
+            demeaningRemarks: false,
+            ridicule: false,
+            nameCalling: false,
+            forcingNotAttendSchool: false,
+            preventingJob: false,
+            preventingLeavingHouse: false,
+            preventingMeetingPerson: false,
+            forcedMarriage: false,
+            preventingMarriageOfChoice: false,
+            forcedMarriageAgainstWill: false,
+            otherVerbalAbuse: []
+        },
+        economicViolence: {
+            noMoneyForChildren: false,
+            noFoodClothesMedicine: false,
+            forcedOutOfHouse: false,
+            preventAccessHouse: false,
+            preventEmployment: false,
+            noEmployment: false,
+            nonPaymentRent: false,
+            noUseHouseholdItems: false,
+            sellingStridhan: false,
+            takingSalary: false,
+            disposingStridhan: false,
+            nonPaymentBills: false,
+            otherEconomicViolence: []
+        },
+        additionalInformation: {
+            otherAdditionalInfo: []
+        }
     });
 
     const [newSexualAbuse, setNewSexualAbuse] = useState('');
@@ -31,7 +71,7 @@ const FormTwo = () => {
         { id: 'nameCalling', label: 'Name calling' },
         { id: 'forcingNotAttendSchool', label: 'Forcing you to not attend school, college or any other educational institution' },
         { id: 'preventingJob', label: 'Preventing you from taking up a job' },
-        { id: 'preventingLeavingHouse', label: 'Preventing you from leaving the House' },
+        { id: 'preventingLeavingHouse', label: 'Preventing you from leaving the house' },
         { id: 'preventingMeetingPerson', label: 'Preventing you from meeting any particular person' },
         { id: 'forcedMarriage', label: 'Forcing you to get married against your will' },
         { id: 'preventingMarriageOfChoice', label: 'Preventing you from marrying a person of your choice' },
@@ -44,7 +84,7 @@ const FormTwo = () => {
         { id: 'forcedOutOfHouse', label: 'Forcing you out of the house you live in' },
         { id: 'preventAccessHouse', label: 'Preventing you from accessing or using any part of the house' },
         { id: 'preventEmployment', label: 'Preventing or obstructing you from carrying on your employment' },
-        { id: 'noEmployment', label: 'Not allowing you to take up an employment' },
+        { id: 'noEmployment', label: 'Not allowing you to take up employment' },
         { id: 'nonPaymentRent', label: 'Non-payment of rent in case of a rented accommodation' },
         { id: 'noUseHouseholdItems', label: 'Not allowing you to use clothes or articles of general household use' },
         { id: 'sellingStridhan', label: 'Selling or pawning your stridhan or any other valuables without informing you and without your consent' },
@@ -63,353 +103,214 @@ const FormTwo = () => {
         }));
     };
 
-    const addOtherSexualAbuseField = () => {
-        if (newSexualAbuse) {
+    const addOtherField = (category, newValue, field) => {
+        if (newValue) {
             setFormData((prev) => ({
                 ...prev,
-                sexualViolence: {
-                    ...prev.sexualViolence,
-                    otherSexualAbuse: [...(prev.sexualViolence.otherSexualAbuse || []), newSexualAbuse],
+                [category]: {
+                    ...prev[category],
+                    [field]: [...(prev[category][field] || []), newValue],
                 },
             }));
-            setNewSexualAbuse('');
         }
     };
 
-    const removeOtherSexualAbuseField = (index) => {
+    const removeOtherField = (category, index, field) => {
         setFormData((prev) => {
-            const updatedAbuse = [...prev.sexualViolence.otherSexualAbuse];
-            updatedAbuse.splice(index, 1);
+            const updatedField = [...prev[category][field]];
+            updatedField.splice(index, 1);
             return {
                 ...prev,
-                sexualViolence: {
-                    ...prev.sexualViolence,
-                    otherSexualAbuse: updatedAbuse,
+                [category]: {
+                    ...prev[category],
+                    [field]: updatedField,
                 },
             };
         });
     };
-
-    const addOtherVerbalAbuseField = () => {
-        if (newVerbalAbuse) {
-            setFormData((prev) => ({
-                ...prev,
-                verbalEmotionalAbuse: {
-                    ...prev.verbalEmotionalAbuse,
-                    otherVerbalAbuse: [...(prev.verbalEmotionalAbuse.otherVerbalAbuse || []), newVerbalAbuse],
-                },
-            }));
-            setNewVerbalAbuse('');
-        }
-    };
-
-    const removeOtherVerbalAbuseField = (index) => {
-        setFormData((prev) => {
-            const updatedAbuse = [...prev.verbalEmotionalAbuse.otherVerbalAbuse];
-            updatedAbuse.splice(index, 1);
-            return {
-                ...prev,
-                verbalEmotionalAbuse: {
-                    ...prev.verbalEmotionalAbuse,
-                    otherVerbalAbuse: updatedAbuse,
-                },
-            };
-        });
-    };
-
-
-    const addOtherEconomicViolenceField = () => {
-        if (newEconomicViolence) {
-            setFormData((prev) => ({
-                ...prev,
-                economicViolence: {
-                    ...prev.economicViolence,
-                    otherEconomicViolence: [...(prev.economicViolence.otherEconomicViolence || []), newEconomicViolence],
-                },
-            }));
-            setNewEconomicViolence('');
-        }
-    };
-
-    const removeOtherEconomicViolenceField = (index) => {
-        setFormData((prev) => {
-            const updatedViolence = [...prev.economicViolence.otherEconomicViolence];
-            updatedViolence.splice(index, 1);
-            return {
-                ...prev,
-                economicViolence: {
-                    ...prev.economicViolence,
-                    otherEconomicViolence: updatedViolence,
-                },
-            };
-        });
-    };
-
-
-    const addOtherAdditionalInfo = () => {
-        if (newAdditionalInfo) {
-            setFormData((prev) => ({
-                ...prev,
-                additionalInformation: {
-                    ...prev.additionalInformation,
-                    otherAdditionalInfo: [...(prev.additionalInformation.otherAdditionalInfo || []), newAdditionalInfo],
-                },
-            }));
-            setNewAdditionalInfo('');
-        }
-    };
-
-    const removeOtherAdditionalInfo = (index) => {
-        setFormData((prev) => {
-            const updatedInfo = [...prev.additionalInformation.otherAdditionalInfo];
-            updatedInfo.splice(index, 1);
-            return {
-                ...prev,
-                additionalInformation: {
-                    ...prev.additionalInformation,
-                    otherAdditionalInfo: updatedInfo,
-                },
-            };
-        });
-    };
-
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3300/endpoint', {
-                method: 'POST', // or 'PUT' based on your use case
-                headers: {
-                    'Content-Type': 'application/json', // Set the content type as JSON
-                },
-                body: JSON.stringify(formData), // Convert your data to a JSON string
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                throw new Error("No token found. Please login again.");
             }
-
-            const result = await response.json();
-            console.log('Success:', result);
+    
+            const response = await axios.post('http://localhost:3300/api/formtwo', formData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+    
+            console.log('Success:', response.data);
+            navigate("/formthree");
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error:', error.response ? error.response.data : error.message);
         }
     };
-
-
-
-    return (
+    
+     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded shadow-md">
-            <form className="p-4">
+            <form className="p-4" onSubmit={handleSubmit}>
                 {/* Sexual Violence Section */}
                 <h2 className="text-lg font-bold mb-2">Sexual Violence</h2>
                 <fieldset className="mb-4">
                     {sexualViolenceField.map((field) => (
-                        <div key={field.name} className="mb-2">
-                            <label className="inline-flex items-center">
+                        <div key={field.name}>
+                            <label htmlFor={field.name}>
                                 <input
                                     type="checkbox"
-                                    className="form-checkbox"
+                                    id={field.name}
                                     checked={formData.sexualViolence[field.name] || false}
                                     onChange={(e) =>
                                         handleInputChange('sexualViolence', field.name, e.target.checked)
                                     }
                                 />
-                                <span className="ml-2">{field.label}</span>
+                                {field.label}
                             </label>
                         </div>
                     ))}
-
-                    {/* Display Added Other Sexual Abuse Entries as Text */}
-                    {formData.sexualViolence.otherSexualAbuse?.map((abuse, index) => (
-                        <div key={index} className="mb-4 flex items-center">
-                            <span>{abuse}</span>
-                            {/* Remove Other Sexual Abuse Button */}
-                            <button
-                                type="button"
-                                onClick={() => removeOtherSexualAbuseField(index)}
-                                className="text-red-500 hover:underline ml-4"
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    ))}
-
-                    {/* Add Other Sexual Abuse Input */}
-                    <div className="mb-4">
-                        <label className="block">Add Other Sexual Abuse:</label>
+                    {/* Add other forms of Sexual Violence */}
+                    <div className="mt-2">
                         <input
                             type="text"
-                            className="form-input mt-1 block w-full"
-                            placeholder="Describe any other sexual abuse"
                             value={newSexualAbuse}
                             onChange={(e) => setNewSexualAbuse(e.target.value)}
+                            placeholder="Add another type of Sexual Violence"
                         />
-                        {/* Add Button */}
                         <button
                             type="button"
-                            onClick={addOtherSexualAbuseField}
-                            className="text-blue-500 hover:underline mt-2"
+                            onClick={() => addOtherField('sexualViolence', newSexualAbuse, 'otherSexualAbuse')}
                         >
                             Add
                         </button>
                     </div>
+                    {formData.sexualViolence.otherSexualAbuse?.map((item, index) => (
+                        <div key={index}>
+                            {item}
+                            <button type="button" onClick={() => removeOtherField('sexualViolence', index, 'otherSexualAbuse')}>
+                                Remove
+                            </button>
+                        </div>
+                    ))}
                 </fieldset>
 
                 {/* Verbal and Emotional Abuse Section */}
-                <h2 className="text-lg font-bold mb-2">Verbal and Emotional Abuse</h2>
+                <h2 className="text-lg font-bold mb-2">Verbal/Emotional Abuse</h2>
                 <fieldset className="mb-4">
                     {verbalAbuseField.map((field) => (
-                        <div key={field.name} className="mb-2">
-                            <label className="inline-flex items-center">
+                        <div key={field.id}>
+                            <label htmlFor={field.id}>
                                 <input
                                     type="checkbox"
-                                    className="form-checkbox"
-                                    checked={formData.verbalEmotionalAbuse[field.name] || false}
+                                    id={field.id}
+                                    checked={formData.verbalEmotionalAbuse[field.id] || false}
                                     onChange={(e) =>
-                                        handleInputChange('verbalEmotionalAbuse', field.name, e.target.checked)
+                                        handleInputChange('verbalEmotionalAbuse', field.id, e.target.checked)
                                     }
                                 />
-                                <span className="ml-2">{field.label}</span>
+                                {field.label}
                             </label>
                         </div>
                     ))}
-                    {/* Display Added Other Verbal Abuse Entries as Text */}
-                    {formData.verbalEmotionalAbuse.otherVerbalAbuse?.map((abuse, index) => (
-                        <div key={index} className="mb-4 flex items-center">
-                            <span>{abuse}</span>
-                            {/* Remove Other Verbal Abuse Button */}
-                            <button
-                                type="button"
-                                onClick={() => removeOtherVerbalAbuseField(index)}
-                                className="text-red-500 hover:underline ml-4"
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    ))}
-
-                    {/* Add Other Verbal Abuse Input */}
-                    <div className="mb-4">
-                        <label className="block">Add Other Verbal Abuse:</label>
+                    {/* Add other forms of Verbal Abuse */}
+                    <div className="mt-2">
                         <input
                             type="text"
-                            className="form-input mt-1 block w-full"
-                            placeholder="Describe any other verbal abuse"
                             value={newVerbalAbuse}
                             onChange={(e) => setNewVerbalAbuse(e.target.value)}
+                            placeholder="Add another type of Verbal/Emotional Abuse"
                         />
-                        {/* Add Button */}
                         <button
                             type="button"
-                            onClick={addOtherVerbalAbuseField}
-                            className="text-blue-500 hover:underline mt-2"
+                            onClick={() => addOtherField('verbalEmotionalAbuse', newVerbalAbuse, 'otherVerbalAbuse')}
                         >
                             Add
                         </button>
                     </div>
-
+                    {formData.verbalEmotionalAbuse.otherVerbalAbuse?.map((item, index) => (
+                        <div key={index}>
+                            {item}
+                            <button type="button" onClick={() => removeOtherField('verbalEmotionalAbuse', index, 'otherVerbalAbuse')}>
+                                Remove
+                            </button>
+                        </div>
+                    ))}
                 </fieldset>
 
                 {/* Economic Violence Section */}
                 <h2 className="text-lg font-bold mb-2">Economic Violence</h2>
                 <fieldset className="mb-4">
                     {economicViolenceField.map((field) => (
-                        <div key={field.name} className="mb-2">
-                            <label className="inline-flex items-center">
+                        <div key={field.id}>
+                            <label htmlFor={field.id}>
                                 <input
                                     type="checkbox"
-                                    className="form-checkbox"
-                                    checked={formData.economicViolence[field.name] || false}
+                                    id={field.id}
+                                    checked={formData.economicViolence[field.id] || false}
                                     onChange={(e) =>
-                                        handleInputChange('economicViolence', field.name, e.target.checked)
+                                        handleInputChange('economicViolence', field.id, e.target.checked)
                                     }
                                 />
-                                <span className="ml-2">{field.label}</span>
+                                {field.label}
                             </label>
                         </div>
                     ))}
-                    {/* Display Added Other Economic Violence Entries as Text */}
-                    {formData.economicViolence.otherEconomicViolence?.map((violence, index) => (
-                        <div key={index} className="mb-4 flex items-center">
-                            <span>{violence}</span>
-                            {/* Remove Other Economic Violence Button */}
-                            <button
-                                type="button"
-                                onClick={() => removeOtherEconomicViolenceField(index)}
-                                className="text-red-500 hover:underline ml-4"
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    ))}
-
-                    {/* Add Other Economic Violence Input */}
-                    <div className="mb-4">
-                        <label className="block">Add Other Economic Violence:</label>
+                    {/* Add other forms of Economic Violence */}
+                    <div className="mt-2">
                         <input
                             type="text"
-                            className="form-input mt-1 block w-full"
-                            placeholder="Describe any other economic violence"
                             value={newEconomicViolence}
                             onChange={(e) => setNewEconomicViolence(e.target.value)}
+                            placeholder="Add another type of Economic Violence"
                         />
-                        {/* Add Button */}
                         <button
                             type="button"
-                            onClick={addOtherEconomicViolenceField}
-                            className="text-blue-500 hover:underline mt-2"
+                            onClick={() => addOtherField('economicViolence', newEconomicViolence, 'otherEconomicViolence')}
                         >
                             Add
                         </button>
                     </div>
-
+                    {formData.economicViolence.otherEconomicViolence?.map((item, index) => (
+                        <div key={index}>
+                            {item}
+                            <button type="button" onClick={() => removeOtherField('economicViolence', index, 'otherEconomicViolence')}>
+                                Remove
+                            </button>
+                        </div>
+                    ))}
                 </fieldset>
 
                 {/* Additional Information Section */}
                 <h2 className="text-lg font-bold mb-2">Additional Information</h2>
-                <fieldset className="mb-4">
-                    {/* Display Added Other Additional Information */}
-                    {formData.additionalInformation.otherAdditionalInfo?.map((info, index) => (
-                        <div key={index} className="mb-4 flex items-center">
-                            <span>{info}</span>
-                            {/* Remove Other Additional Info Button */}
-                            <button
-                                type="button"
-                                onClick={() => removeOtherAdditionalInfo(index)}
-                                className="text-red-500 hover:underline ml-4"
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    ))}
-
-                    {/* Add Other Additional Information Input */}
-                    <div className="mb-4">
-                        <label className="block">Add Other Information:</label>
-                        <input
-                            type="text"
-                            className="form-input mt-1 block w-full"
-                            placeholder="Add any additional information"
-                            value={newAdditionalInfo}
-                            onChange={(e) => setNewAdditionalInfo(e.target.value)}
-                        />
-                        {/* Add Button */}
-                        <button
-                            type="button"
-                            onClick={addOtherAdditionalInfo}
-                            className="text-blue-500 hover:underline mt-2"
-                        >
-                            Add
-                        </button>
-                    </div>
-                </fieldset>
-
-                {/* Submit Button */}
-                <div className="mt-6">
-                    <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
-                        Submit
+                <div className="mt-2">
+                    <input
+                        type="text"
+                        value={newAdditionalInfo}
+                        onChange={(e) => setNewAdditionalInfo(e.target.value)}
+                        placeholder="Add any additional information"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => addOtherField('additionalInformation', newAdditionalInfo, 'otherAdditionalInfo')}
+                    >
+                        Add
                     </button>
                 </div>
+                {formData.additionalInformation.otherAdditionalInfo?.map((item, index) => (
+                    <div key={index}>
+                        {item}
+                        <button type="button" onClick={() => removeOtherField('additionalInformation', index, 'otherAdditionalInfo')}>
+                            Remove
+                        </button>
+                    </div>
+                ))}
+
+                <button type="submit" className="mt-4 bg-blue-500 text-white p-2 rounded">
+                    Submit
+                </button>
             </form>
         </div>
     );

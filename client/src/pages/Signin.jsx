@@ -118,18 +118,37 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      // Replace with your API endpoint
+      
       const response = await axios.post('http://localhost:3300/api/auth/login', formData);
-      // resp =  await response.json()
-            if(response.data.message =="Login successful"){
+  
+      // Assuming the response has a 'token' field
+      if (response.data.message === "Login successful") {
+        // Store the token in localStorage
+        localStorage.setItem('authToken', response.data.token); // Save JWT token
+  
+        // Perform any other login actions, like redirecting
         login(formData.password, formData.email, "1");
-        navigate("/")
+        navigate("/");
+      } else {
+        setErrorMessage('Invalid email or password.');
       }
     } catch (err) {
       console.error(err.response ? err.response.data : err.message);
       setErrorMessage('Invalid email or password.');
     }
+
+
+    const token = localStorage.getItem('authToken');
+console.log("Token from localStorage: ", token);
+
+if (!token) {
+  throw new Error("No token found. Please login again.");
+}
+
+
+   
   };
 
   return (

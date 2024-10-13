@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 //coment i just wrote
 //another comement
 const FormThree = () => {
@@ -88,12 +90,29 @@ const FormThree = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData, dowryDemands, attachedDocuments, otherOrders, assistanceOptions);
-    // Handle form submission logic here
-  };
+    try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            throw new Error("No token found. Please login again.");
+        }
 
+        const response = await axios.post('http://localhost:3300/api/formthree', formData, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+ 
+        console.log('Success:', formData);
+        navigate("/userdata");
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+    }
+  };
+  
   const handleAddOtherOrder = () => {
     if (formData.otherOrderDetails.trim() !== "") {
       setOtherOrders([...otherOrders, formData.otherOrderDetails]);
