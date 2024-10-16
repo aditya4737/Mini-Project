@@ -1,159 +1,25 @@
 
-
-
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-
-// const UserFormsData = () => {
-//   const [formOneData, setFormOneData] = useState(null);
-//   const [formTwoData, setFormTwoData] = useState(null);
-//   const [formThreeData, setFormThreeData] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const token = localStorage.getItem('authToken'); // Get token from local storage
-//         if (!token) {
-//           throw new Error('No token found. User must be logged in.');
-//         }
-
-//         const headers = { Authorization: `Bearer ${token}` };
-
-//         const formOneResponse = await axios.get('/api/formone', { headers });
-//         const formTwoResponse = await axios.get('/api/formtwo', { headers });
-//         const formThreeResponse = await axios.get('/api/formthree', { headers });
-
-//         setFormOneData(formOneResponse.data);
-//         setFormTwoData(formTwoResponse.data);
-//         setFormThreeData(formThreeResponse.data);
-//       } catch (err) {
-//         console.error('Error fetching forms data:', err.response ? err.response.data : err.message);
-//         setError('Error fetching forms data');
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   if (loading) return <div className="text-center">Loading...</div>;
-//   if (error) return <div className="text-red-500">{error}</div>;
-
-//   return (
-//     <div className="container mx-auto p-4">
-//       <h1 className="text-2xl font-bold mb-4">User Forms Data</h1>
-
-//       {/* Display Form One */}
-//       <h2 className="text-xl font-semibold mb-2">Form One Data (Domestic Incident Report)</h2>
-//       <div className="bg-gray-100 p-4 rounded mb-4">
-//         {formOneData ? (
-//           <>
-//             <p><strong>Complainant Name:</strong> {formOneData.complainantName}</p>
-//             <p><strong>Complainant Contact:</strong> {formOneData.complainantContact}</p>
-
-//            <h3 className="font-semibold mt-4">Respondent Details</h3>
-//              {formOneData.respondentDetails.map((respondent, index) => (
-//               <div key={index} className="mb-2">
-//                 <p><strong>Name:</strong> {respondent.name}</p>
-//                 <p><strong>Age:</strong> {respondent.age}</p>
-//                 <p><strong>Sex:</strong> {respondent.sex}</p>
-//                 <p><strong>Relation:</strong> {respondent.relation}</p>
-//               </div>
-//             ))}
-
-//             <h3 className="font-semibold mt-4">Children Details</h3>
-//             {formOneData.childrenDetails.map((child, index) => (
-//               <div key={index} className="mb-2">
-//                 <p><strong>Name:</strong> {child.name}</p>
-//                 <p><strong>Age:</strong> {child.age}</p>
-//                 <p><strong>Sex:</strong> {child.sex}</p>
-//                 <p><strong>Residing With:</strong> {child.residingWith}</p>
-//               </div>
-//             ))}
-
-//             <h3 className="font-semibold mt-4">Incidents</h3>
-//             {formOneData.incidents.map((incident, index) => (
-//               <div key={index} className="mb-2">
-//                 <p><strong>Date:</strong> {new Date(incident.date).toLocaleDateString()}</p>
-//                 <p><strong>Time:</strong> {incident.time}</p>
-//                 <p><strong>Place:</strong> {incident.place}</p>
-//                 <p><strong>Person Involved:</strong> {incident.personInvolved}</p>
-//               </div>
-//              ))}
-
-//             <h3 className="font-semibold mt-4">Additional Info</h3>
-//             <p>{formOneData.additionalInfo}</p>
-//          </>
-//         ) : (
-//           <p>No data available for Form One</p>
-//         )}
-//       </div>
-
-//       {/* Display Form Two */}
-//       <h2 className="text-xl font-semibold mb-2">Form Two Data</h2>
-//       <div className="bg-gray-100 p-4 rounded mb-4">
-//         {formTwoData ? (
-//           <>
-//             <h3 className="font-semibold">Sexual Violence</h3>
-//             <p>Forced Intercourse: {formTwoData.sexualViolence.forcedIntercourse ? 'Yes' : 'No'}</p>
-//             <p>Forced Pornography: {formTwoData.sexualViolence.forcedPornography ? 'Yes' : 'No'}</p>
-
-//             <h3 className="font-semibold mt-4">Verbal Emotional Abuse</h3>
-//             <p>Accusation: {formTwoData.verbalEmotionalAbuse.accusation ? 'Yes' : 'No'}</p>
-//             <p>Insult Dowry: {formTwoData.verbalEmotionalAbuse.insultDowry ? 'Yes' : 'No'}</p>
-
-//             {/* Continue mapping other fields as per the schema */}
-//           </>
-//         ) : (
-//           <p>No data available for Form Two</p>
-//         )}
-//       </div>
-
-//       {/* Display Form Three */}
-//       <h2 className="text-xl font-semibold mb-2">Form Three Data</h2>
-//       <div className="bg-gray-100 p-4 rounded mb-4">
-//         {formThreeData ? (
-//           <>
-//             <h3 className="font-semibold">Dowry Demands</h3>
-//             {formThreeData.dowryDemands.map((demand, index) => (
-//               <div key={index}>
-//                 <p>{demand.value}</p>
-//               </div>
-//             ))}
-
-//             <h3 className="font-semibold mt-4">Protection Order</h3>
-//             <p>{formThreeData.protectionOrder}</p>
-
-//             <h3 className="font-semibold mt-4">Attached Documents</h3>
-//             {formThreeData.attachedDocuments.map((doc, index) => (
-//               <div key={index}>
-//                 <p><strong>{doc.label}:</strong> {doc.name}</p>
-//               </div>
-//             ))}
-//           </>
-//         ) : (
-//           <p>No data available for Form Three</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default UserFormsData;
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { useAuth } from '../Context/AuthContext';
 const UserFormsData = () => {
   const [formOneData, setFormOneData] = useState({});
   const [formTwoData, setFormTwoData] = useState({});
   const [formThreeData, setFormThreeData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const { login } = useAuth();
   useEffect(() => {
+     
+      const pass = localStorage.getItem('pass');
+      const email = localStorage.getItem('email');
+      login(pass, email, "1");
+      
+    }, []);
+  useEffect(() => {
+    
+        
+      
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('authToken');

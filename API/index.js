@@ -395,7 +395,7 @@ app.post('/api/formone', authMiddleware, async (req, res) => {
       }
       const userId = req.user.id;
       console.log('Authenticated user ID:', userId);
-
+ 
       // Destructure the received data according to the new schema
       const {
           complainantName,

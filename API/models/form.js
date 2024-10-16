@@ -22,7 +22,7 @@ const incidentSchema = new mongoose.Schema({
   date: { type: Date, required: true },
   time: { type: String, required: true },
   place: { type: String, required: true },
-  personInvolved: { type: String, required: true }
+  personInvolved: { type: String, required: false }
 });
 
 // Types of Violence Schema
@@ -38,6 +38,7 @@ const domesticIncidentReportSchema = new mongoose.Schema({
   respondentDetails: [respondentSchema],
   childrenDetails: [childSchema],
   incidents: [incidentSchema],
+ 
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

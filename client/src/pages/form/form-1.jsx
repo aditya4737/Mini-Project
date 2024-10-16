@@ -1,8 +1,18 @@
 import React, { useState, createContext } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAuth } from '../../Context/AuthContext';
 
 const FormOne = () => {
+    const { login } = useAuth();
+    useEffect(() => {
+       
+        const pass = localStorage.getItem('pass');
+        const email = localStorage.getItem('email');
+        login(pass, email, "1");
+        
+      }, []);
     const [formData, setFormData] = useState({
         complainantName: "",
         complainantContact: "",
@@ -15,9 +25,10 @@ const FormOne = () => {
             { id: "dowry", label: "Dowry Related", checked: false },
         ],
     });
+  
     const [respondentDetails, setRespondentDetails] = useState([{ name: "", age: "", sex: "", relation: "" }]);
     const [childrenDetails, setChildrenDetails] = useState([{ name: "", age: "", sex: "", residingWith: "" }]);
-
+  
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -78,14 +89,12 @@ const FormOne = () => {
         try {
           
             const token = localStorage.getItem('authToken');
-            const email1= localStorage.getItem('email');
-            if(!email1){
-                navigate("/Signin");
-            }
+            
             if (!token) {
               throw new Error("No token found. Please login again.");
             }
-        
+            
+          
           
             const response = await axios.post(
               'http://localhost:3300/api/formone',
@@ -259,6 +268,7 @@ const FormOne = () => {
                                     required
                                 />
                             </div>
+
                             {/* Remove Respondent Button */}
                             {index > 0 && (
                                 <button

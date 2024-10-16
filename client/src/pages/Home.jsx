@@ -1,8 +1,18 @@
 import React from 'react';
 import Card from './Card'; // Assuming Card component is in the same directory
 import CaseHistory from './caseHistory';
+import { useAuth } from '../Context/AuthContext';
 
+import { useEffect } from 'react';
 function Home() {
+  const { login } = useAuth();
+    useEffect(() => {
+       
+        const pass = localStorage.getItem('pass');
+        const email = localStorage.getItem('email');
+        login(pass, email, "1");
+        
+      }, []);
   return (
     <>
    

@@ -2,10 +2,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-
-
+import { useAuth } from '../../Context/AuthContext';
+import { useEffect } from 'react';
 
 const FormTwo = () => {
+    const { login } = useAuth();
+    useEffect(() => {
+       
+        const pass = localStorage.getItem('pass');
+        const email = localStorage.getItem('email');
+        login(pass, email, "1");
+        
+      }, []);
     const [formData, setFormData] = useState({
         sexualViolence: {
             forcedIntercourse: false,
